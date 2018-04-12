@@ -2,7 +2,7 @@ only MOT
 1. Removed people pose tracking packages
 2. Detection re-locoalized from trackers
 3. Only create one tracker id for one object
-4. Not consider the detection object names when associate the detection to the track
+4. Consider the detection object names when associate the detection to the track
 5. Add the roi output in terminal after selection in opt_gui 
 6. Replace the opt_utils with the openp_track v1(the new opt_utils in open_ptrack v2 has the modified for the pose estimation)
 7. Tuned the parameters in "object_tracker_multicamera.yaml" to slove the ID switch problems
@@ -43,5 +43,4 @@ $roslaunch detection object_detector_kinect2_bag_point_cloud.launch sensor_name:
 (or run "$roslaunch detectionobject_detector_kinect2_bag.launch " if you don't want to visualize the point cloud)
 The tracking results will be saved in the same place as the rosbags
 
-(The current vertion is perfect for the similar objects with different name.
-With similar/same objects, the detector will easy to switch id. If consider the object name during the track detection association, the problem happen. In this vertion ,we don't consider the object name during track detection asscoiation, the tracker will just considet the distance , therefore , even the id switch happen in detection ,it will not be a problem in the tracker.)
+Consider the object name during track detction assciation. It is perfect for 5 obj sequence. But it works not very good for two same objects

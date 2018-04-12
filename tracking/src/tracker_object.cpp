@@ -367,13 +367,13 @@ TrackerObject::createDistanceMatrix()
         {
 
             //for same object with diff name, should be conmmented
-//            std::string detection_object_name= dit->getObjectName();
-//            if (detection_object_name.compare("default")!=0 && detection_object_name.compare(track_object_name)!=0 && track_object_name.compare("default")!=0)
-//            {
-//                distance_matrix_(track, measure++)=2*gate_distance_;
-//            }
-//            else
-//            {
+            std::string detection_object_name= dit->getObjectName();
+            if (detection_object_name.compare("default")!=0 && detection_object_name.compare(track_object_name)!=0 && track_object_name.compare("default")!=0)
+            {
+                distance_matrix_(track, measure++)=2*gate_distance_;
+            }
+            else
+            {
             //for same object with diff name, should be conmmented
 
 
@@ -415,7 +415,7 @@ TrackerObject::createDistanceMatrix()
           distance_matrix_(track, measure - 1));*/
 
             //for same object with diff name, should be conmmented
-//            }
+            }
             //for same object with diff name, should be conmmented
 
         }
