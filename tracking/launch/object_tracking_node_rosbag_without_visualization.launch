@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- SESSION ID: 1505919046 -->
+<launch>
+
+  <param name="/use_sim_time"                              value="true"/>
+
+  <!-- Load calibration results -->
+  <include file="$(find opt_calibration)/launch/opt_calibration_results.launch"/>
+
+  <!-- People and object tracking -->
+  <include file="$(find tracking)/launch/object_tracker_network.launch"/>
+
+</launch>

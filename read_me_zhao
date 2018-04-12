@@ -1,0 +1,47 @@
+only MOT
+1. Removed people pose tracking packages
+2. Detection re-locoalized from trackers
+3. Only create one tracker id for one object
+4. Not consider the detection object names when associate the detection to the track
+5. Add the roi output in terminal after selection in opt_gui 
+6. Replace the opt_utils with the openp_track v1(the new opt_utils in open_ptrack v2 has the modified for the pose estimation)
+7. Tuned the parameters in "object_tracker_multicamera.yaml" to slove the ID switch problems
+8. The new tracking node "tracker_object_with_robot_GT_node" can record the tracking results as well as the GT from the robot. The number of the objects GT is the same as the object numbers in the subscribed detections. This node also can work online
+
+ 
+To use this package on line:
+1. Finish the camera network calibration
+2. Run tracking on master computer. $roslaunch tracking object_tracking_node.launch
+3. Run detections on different computers.  
+$roslaunch detection object_detector.launch sensor_name:=kinect_01 algorithm:=3dms Backprojection_Mode:=HSVD init_rois_txt_path:=/tmp/init_rois/
+$roslaunch detection object_detector.launch sensor_name:=kinect_02 algorithm:=3dms Backprojection_Mode:=HSVD init_rois_txt_path:=/tmp/init_rois/
+$roslaunch detection object_detector.launch sensor_name:=kinect_03 algorithm:=3dms Backprojection_Mode:=HSVD init_rois_txt_path:=/tmp/init_rois/
+(The "init_rois_txt_path" is optional )
+
+Record rosbags for offline using:
+
+1. Set the object TFs 
+2. Run tracking on master computer. $roslaunch tracking object_tracking_node.launch
+3. Bring up the robot to broadcasting the TFs
+4. Recording rosbags
+
+
+To use the recorded rosbags:
+1. Merge the rosbags from different comouters
+2. Put the "init.txt"(roi init txt) in the same position as the merged bag
+3. Replace the "opt_calibration_results.launch" 
+4. There are two ways to get the tracking results
+4.1 use one launch file for both tracking and detection
+$ roslaunch tracking record_tracks_feedback_and_all_detections.launch bag_path:=" " algorithm:=3dms Backprojection_Mode:=HSVD
+4.2 run tracking and detecion seperatelly
+Tracking node$ roslaunch tracking record_tracks_feedback.launch bag_path:=" " algorithm:=3dms Backprojection_Mode:=HSVD
+All the detections one by one in different command window. 
+$roslaunch detection object_detector_kinect2_bag_point_cloud.launch sensor_name:=kinect_01 Backprojection_Mode:=HSVD algorithm:=3dms  init_rois_txt_path:=" "
+$roslaunch detection object_detector_kinect2_bag_point_cloud.launch sensor_name:=kinect_02 Backprojection_Mode:=HSVD algorithm:=3dms  init_rois_txt_path:=" "
+$roslaunch detection object_detector_kinect2_bag_point_cloud.launch sensor_name:=kinect_03 Backprojection_Mode:=HSVD algorithm:=3dms  init_rois_txt_path:=" "
+
+(or run "$roslaunch detectionobject_detector_kinect2_bag.launch " if you don't want to visualize the point cloud)
+The tracking results will be saved in the same place as the rosbags
+
+(The current vertion is perfect for the similar objects with different name.
+With similar/same objects, the detector will easy to switch id. If consider the object name during the track detection association, the problem happen. In this vertion ,we don't consider the object name during track detection asscoiation, the tracker will just considet the distance , therefore , even the id switch happen in detection ,it will not be a problem in the tracker.)

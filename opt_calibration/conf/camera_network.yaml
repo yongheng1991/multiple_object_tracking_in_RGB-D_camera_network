@@ -1,0 +1,24 @@
+network:
+  - pc: "iaslab-01"
+    sensors:
+      - type: kinect2
+        id: "kinect_01"
+  - pc: "iaslab-02"
+    sensors:
+      - type: kinect2
+        id: "kinect_02"
+  - pc: "iaslab-03"
+    sensors:
+      - type: kinect2
+        id: "kinect_03"
+  - pc: "iaslab-04"
+    sensors:
+      - type: kinect2
+        id: "kinect_04"
+# Checkerboard parameters
+checkerboard:
+  rows: 6
+  cols: 5
+  cell_width: 0.12
+  cell_height: 0.12
+  

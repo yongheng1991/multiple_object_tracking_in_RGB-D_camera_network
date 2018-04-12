@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<launch>
+  <param name="/use_sim_time"                              value="true"/>
+  <arg name="bag_path"                              default=" "/>
+  <arg name="Backprojection_Mode"               default="HSVD" />
+  <arg name="algorithm"               default="3dms" />
+
+  <!-- tracking node -->
+  <include file="$(find tracking)/launch/object_tracking_node_rosbag_without_visualization.launch">
+  </include>
+
+  <!-- Detection node -->
+  <include file="$(find detection)/launch/object_detector_kinect2_bag.launch">
+    <arg name="sensor_name"             value="kinect_01"/>
+    <arg name="Backprojection_Mode"     value="$(arg Backprojection_Mode)" />
+    <arg name="algorithm"               value="$(arg algorithm)" />
+    <arg name="init_rois_txt_path"      value="$(arg bag_path)" />
+  </include>
+
+  <include file="$(find detection)/launch/object_detector_kinect2_bag.launch">
+    <arg name="sensor_name"             value="kinect_02" />
+    <arg name="Backprojection_Mode"     value="$(arg Backprojection_Mode)" />
+    <arg name="algorithm"               value="$(arg algorithm)" />
+    <arg name="init_rois_txt_path"      value="$(arg bag_path)" />
+  </include>
+
+  <include file="$(find detection)/launch/object_detector_kinect2_bag.launch">
+    <arg name="sensor_name"             value="kinect_03" />
+    <arg name="Backprojection_Mode"     value="$(arg Backprojection_Mode)" />
+    <arg name="algorithm"               value="$(arg algorithm)" />
+    <arg name="init_rois_txt_path"      value="$(arg bag_path)" />
+  </include>
+
+  <include file="$(find detection)/launch/object_detector_kinect2_bag.launch">
+    <arg name="sensor_name"             value="kinect_04" />
+    <arg name="Backprojection_Mode"     value="$(arg Backprojection_Mode)" />
+    <arg name="algorithm"               value="$(arg algorithm)" />
+    <arg name="init_rois_txt_path"      value="$(arg bag_path)" />
+  </include>
+
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock $(arg bag_path)/images_all_cameras.bag -r 0.5" required="true" /> 
+
+ 
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="/detector/object_markers_array /tracker/object_markers_array /tracker/object_markers_array_smoothed /tf /ground_truth -O $(arg bag_path)/$(arg algorithm)-$(arg Backprojection_Mode).bag"/>
+
+
+</launch>
