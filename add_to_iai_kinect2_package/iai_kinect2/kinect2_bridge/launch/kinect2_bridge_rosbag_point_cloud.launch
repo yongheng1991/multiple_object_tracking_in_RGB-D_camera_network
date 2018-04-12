@@ -1,0 +1,22 @@
+<launch>
+  <arg name="publish_frame" default="true" />
+  <arg name="sensor_id" default=""/> 
+  <arg name="sensor_name" default="kinect2_head" />
+
+  <include file="$(find kinect2_bridge)/launch/include/kinect2_frames.launch">
+    <arg name="publish_frame" value="$(arg publish_frame)" />
+    <arg name="camera" value="$(arg sensor_name)"/>
+  </include>
+
+  <!-- genreate low resolution point cloud (960 x 540) -->
+  <node pkg="nodelet" type="nodelet" name="$(arg sensor_name)_points_xyzrgb_lowres"
+        args="standalone depth_image_proc/point_cloud_xyzrgb"
+        respawn="false">
+    <remap from="rgb/camera_info"             to="/$(arg sensor_name)/rgb_lowres/camera_info" />
+    <remap from="rgb/image_rect_color"        to="/$(arg sensor_name)/rgb_lowres/image" />
+    <remap from="depth_registered/image_rect" to="/$(arg sensor_name)/depth_lowres/image" />
+    <remap from="depth_registered/points"     to="/$(arg sensor_name)/depth_lowres/points" />
+    <param name="queue_size" type="int" value="2" />
+  </node>
+
+</launch>

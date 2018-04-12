@@ -1,0 +1,11 @@
+<launch>
+  <arg name="publish_frame" default="true" />
+  <arg name="sensor_id" default=""/> 
+  <arg name="sensor_name" default="kinect2_head" />
+
+  <include file="$(find kinect2_bridge)/launch/include/kinect2_frames.launch">
+    <arg name="publish_frame" value="$(arg publish_frame)" />
+    <arg name="camera" value="$(arg sensor_name)"/>
+  </include>
+
+</launch>
